@@ -20,6 +20,10 @@ To start the application use this command:
 npm start
 ```
 
+Now, to see the app, open a browser and go to this link
+
+> localhost:3001
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
 
