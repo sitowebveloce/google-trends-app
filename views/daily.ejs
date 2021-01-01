@@ -1,0 +1,131 @@
+<%- include ('partials/header-daily.ejs') %>
+<a href="/catalog" class='home-link'>
+    <img src="/img/home.svg" alt="home">
+</a>
+<div class="content">
+    <a href="/trends/daily" class="trends-link">
+        <img class="trends-img" src="/img/data-analysis.svg" alt="">
+        <h1 class="title">Google Daily Trends</h1>
+    </a>
+
+    <%
+        let YYYY = new Date().getFullYear();
+        let MM = (new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+        let DD = (new Date().getDate()) < 10 ? '0' + (new Date().getDate()) : (new Date().getDate());
+        let ymd = YYYY + '-' + MM + '-' + DD;
+    %>
+
+    <form action="/trends/daily" method="POST" autocomplete="off">
+        <label class="label-keyword" for="geo"> Geo 24hours Trends</label>
+        <input type="text" id="geo" name="geo" class="keyword" placeholder="geo: 'US' target USA" required>
+        <label class="label-start" for="day">Day</label>
+        <input type="date" id="day" name="day" value='<%- ymd %>' min="2020-05-01" max="2030-01-01" required>
+        <button class="btn" type="submit">
+            <img class="search-trends" src="/img/search.svg" alt="search">
+        </button>
+    </form>
+    <div class="res">
+        <!-- FORMATTED DATE  -->
+
+        <!-- LOOP THROUGH DATA  -->
+        <% data.forEach(t => { %>
+        <div class="card">
+            <div class="list">
+                <% if(t.formattedDate !== undefined) {  %>
+                <div class="date"> <strong>Date: </strong>
+                    <%= t.formattedDate %>
+                </div>
+                <% } %>
+                <!-- TITLE  -->
+                <% if(t.title !== undefined) {  %>
+                <div class="query-title"> <strong>Query: </strong>
+                    <span> <%= t.title.query %> </span>
+                </div>
+                <% } %>
+                <!-- TRAFFIC  -->
+                <% if(t.formattedTraffic !== undefined) {  %>
+                <div class="list-inside"> <strong>Traffic: </strong>
+                    <%= t.formattedTraffic %>
+                    <% } %>
+                </div>
+                <!-- RELATED QUERIES  -->
+                <% let qNum = 1 %>
+                <% if(t.relatedQueries !== undefined) {  %>
+                <% t.relatedQueries.forEach(q => { %>
+                <div class="list-inside">
+                    <strong>Related Query <%= qNum++ %>: </strong>
+                    <%= q.query %>
+                </div>
+                <% }) %>
+                <% } %>
+                <!-- ARTICLES  -->
+                <% if(t.articles !== undefined) {  %>
+                <% t.articles.forEach(a=> {  %>
+                <div class="list-inside">
+                    <strong>Article Title: </strong>
+                    <%- a.title %>
+                </div>
+                <div class="list-inside"> <strong>Time Ago: </strong>
+                    <%= a.timeAgo %>
+                </div>
+                <details>
+                    <% if(a.image !== undefined){ %>
+                    <summary>
+                        <%= a.image.newsUrl.substring(8,20) %> ...
+                    </summary>
+                    <% } %>
+                    <span>ℹ️</span>
+                    <% if(a.image !== undefined){ %>
+                    <img src="<%= a.image.imageUrl %>"> <br>
+                    <% } %>
+                    <div> <strong>Source: </strong>
+                        <%= a.source %>
+                    </div>
+                    <!-- IMAGE  -->
+                    <% if(a.image !== undefined){ %>
+                    <div> <strong>News Url: </strong>
+                        <a href="<%= a.image.newsUrl %>" target="BLANK">
+                            <%= a.image.newsUrl.substring(0,33) %> ... <br>
+                        </a>
+                    </div>
+                    <div> <strong>Source: </strong>
+                        <%= a.image.source %>
+                    </div>
+                    <% } %>
+                </details>
+                <!-- SNIPPET  -->
+                <div class="list-inside"> <strong>Url: </strong>
+                    <a href="<%= a.url %>" target="BLANK">
+                        <%= a.url.substring(0,33) %> ...
+                    </a>
+
+                </div>
+                <div class="list-inside">
+                    <strong>Snippet: </strong>
+                    <%- a.snippet %>
+
+                </div>
+                <!-- END ARTICLES LOOP -->
+                <% });  %>
+
+
+
+
+
+
+                <!-- END LIST  -->
+            </div>
+            <% } %>
+
+            <!-- END CARD  -->
+        </div>
+        <!-- END LOOP  -->
+        <% }) %>
+
+
+        <!-- END RES  -->
+    </div>
+    <!-- END CONTENT  -->
+</div>
+
+<%- include ('partials/footer.ejs')%>

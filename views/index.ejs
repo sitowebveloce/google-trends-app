@@ -1,0 +1,38 @@
+<%- include ('partials/header-overtime.ejs') %>
+
+
+<a href="/catalog" class='home-link'>
+    <img src="/img/home.svg" alt="home">
+</a>
+<div class="content">
+    <a href="/trends/overtime" class="trends-link">
+        <img class="trends-img" src="/img/data-analysis.svg" alt="">
+        <h1 class="title">Google Interest Trends</h1>
+    </a>
+    <%
+        let YYYY = new Date().getFullYear();
+        let MM = (new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+        let DD = (new Date().getDate()) < 10 ? '0' + (new Date().getDate()) : (new Date().getDate());
+        let ymd = YYYY + '-' + MM + '-' + DD;
+    %>
+    <form action="/trends/overtime" method="POST" autocomplete="off">
+        <label class="label-keyword" for="keyword">Keyword</label>
+        <input type="text" id="keyword" name="keyword" class="keyword" placeholder="Search trend" required>
+        <label class="label-start" for="start">Start</label>
+        <input type="date" id="start" name="start" value='<%-ymd %>' min="2005-01-01" max="2030-01-01" required>
+        <button class="btn" type="submit">
+            <img class="search-trends" src="/img/search.svg" alt="search">
+        </button>
+    </form>
+    <div class="res"></div>
+
+</div>
+
+<!-- PASS DATA TO MAIN.JS -->
+<% if (data) { %> <script>
+    let data = `<%- JSON.stringify(data) %>`;
+</script>
+
+<% } %>
+
+<%- include ('partials/footer-chart.ejs')%>

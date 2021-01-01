@@ -1,0 +1,96 @@
+<%- include ('partials/header-daily.ejs') %>
+<a href="/catalog" class='home-link'>
+    <img src="/img/home.svg" alt="home">
+</a>
+<div class="content">
+    <a href="/trends/realtime" class="trends-link">
+        <img class="trends-img" src="/img/data-analysis.svg" alt="">
+        <h1 class="title">Google Real Time Trends</h1>
+    </a>
+
+    <%
+        let YYYY = new Date().getFullYear();
+        let MM = (new Date().getMonth() + 1) < 10 ? '0' + (new Date().getMonth() + 1) : (new Date().getMonth() + 1);
+        let DD = (new Date().getDate()) < 10 ? '0' + (new Date().getDate()) : (new Date().getDate());
+        let ymd = YYYY + '-' + MM + '-' + DD;
+    %>
+
+    <form action="/trends/realtime" method="POST" autocomplete="off">
+        <label class="label-keyword" for="geo"> Geo 24hours Trends</label>
+        <input type="text" id="geo" name="geo" class="keyword" placeholder="geo: 'US' target USA" required>
+        <!-- <label class="label-start" for="day">Day</label> -->
+        <!-- <input type="date" id="day" name="day" value='<%- ymd %>' min="2020-05-01" max="2030-01-01" required> -->
+        <button class="btn" type="submit">
+            <img class="search-trends" src="/img/search.svg" alt="search">
+        </button>
+    </form>
+    <div class="res">
+
+        <!-- LOOP THROUGH DATA  -->
+        <% data.forEach(t => { %>
+        <div class="card">
+            <div class="list">
+                <% if(t.image !== undefined){ %>
+                <% if(t.image.newsUrl !== undefined){ %>
+                <div> <strong>News Url: </strong>
+                    <a href="<%= t.image.newsUrl %>" target="BLANK">
+                        <%= t.image.newsUrl.substring(0,22) %> ... <br>
+                    </a>
+                </div>
+                <% } %>
+                <div> <strong>Source: </strong>
+                    <%= t.image.source %>
+                </div>
+                <div>
+                    <img src="<%= t.image.imgUrl %>">
+                </div>
+                <% } %>
+                <% if(t.articles !== undefined){ %>
+                <% t.articles.forEach(a => { %>
+                <div class="list-inside">
+                    <strong>Title: </strong>
+                    <%- a.articleTitle %>
+                </div>
+                <% if(a.url !== undefined) { %>
+                <div class="list-inside">
+                    <strong>Link: </strong>
+                    <a href="<%= a.url %>" target="BLANK"> <%= a.url.substring(0,22) %> ... </a>
+                </div>
+                <% } %>
+                <% if(a.source !== undefined) { %>
+                <div class="list-inside">
+                    <strong>Source: </strong>
+                    <%= a.source %> </a>
+                </div>
+                <% } %>
+                <% if(a.time !== undefined) { %>
+                <div class="list-inside">
+                    <strong>Time: </strong>
+                    <%= a.time %> </a>
+                </div>
+                <% } %>
+                <% if(a.snippet !== undefined) { %>
+                <div class="list-inside">
+                    <strong>Snippet: </strong>
+                    <%- a.snippet %> </a>
+                </div>
+                <% } %>
+                <!-- END LOOP ARTICLES  -->
+                <% }) %>
+                <!-- END CHECK ARTICLES  -->
+                <% } %>
+                <!-- END LIST  -->
+            </div>
+
+            <!-- END CARD  -->
+        </div>
+        <!-- END LOOP  -->
+        <% }) %>
+
+
+        <!-- END RES  -->
+    </div>
+    <!-- END CONTENT  -->
+</div>
+
+<%- include ('partials/footer.ejs')%>

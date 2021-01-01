@@ -1,0 +1,46 @@
+<%- include ('partials/header-daily.ejs') %>
+<a href="/catalog" class='home-link'>
+    <img src="/img/home.svg" alt="home">
+</a>
+<div class="content">
+    <a href="/trends/autocomplete" class="trends-link">
+        <img class="trends-img" src="/img/data-analysis.svg" alt="">
+        <h1 class="title">Google Autocomplete</h1>
+    </a>
+    <form action="/trends/autocomplete" method="POST" autocomplete="off">
+        <label class="label-keyword" for="keyword"> Keyword</label>
+        <input type="text" id="keyword" name="keyword" class="keyword" placeholder="Keyword" required>
+        <button class="btn" type="submit">
+            <img class="search-trends" src="/img/search.svg" alt="search">
+        </button>
+    </form>
+    <div class="res">
+        <!-- FORMATTED DATE  -->
+
+        <!-- LOOP THROUGH DATA  -->
+        <% data.forEach(t => { %>
+        <div class="card">
+            <div class="list">
+                <% if(t.title !== undefined) { %>
+                <div class="list-inside">
+                    <%=  t.title %>
+                </div>
+                <% } %>
+                <% if(t.type !== undefined){ %>
+                <div class="list-inside">
+                    <%=  t.type %>
+                    <% } %>
+
+                </div>
+
+            </div>
+            <!-- END LOOP  -->
+            <% }) %>
+
+        </div>
+        <!-- END RES  -->
+    </div>
+    <!-- END CONTENT  -->
+</div>
+
+<%- include ('partials/footer.ejs')%>
