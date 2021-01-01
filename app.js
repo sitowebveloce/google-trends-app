@@ -27,7 +27,6 @@ app.get('/', (req, res)=>{
 });
 app.use('/trends', index);
 
-
 // Listener
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
